@@ -12,21 +12,35 @@ model Contact {
   id   Int    @id @default(autoincrement())
   name String
 
-  category String?
-  adress   String?
-  notes    String?
+  secondName String? @map("second_name")
+  lastName   String? @map("last_name")
+
+  categoryTypeId Int?
+  address        String?
+  notes          String?
 
   emails         Email[]
   phoneNumbers   PhoneNumber[]
   socialNetworks SocialNetwork[]
+  importantDate  ImportantDate[]
 
-  relation1 Relation[] @relation("Contact1")
-  relation2 Relation[] @relation("Contact2")
+  relation1 Relation[]    @relation("Contact1")
+  relation2 Relation[]    @relation("Contact2")
+  category  CategoryType? @relation(fields: [categoryTypeId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("contacts")
+}
+
+model CategoryType {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  contacts Contact[]
+
+  @@map("category_types")
 }
 
 model Email {
@@ -36,6 +50,7 @@ model Email {
 
   contact Contact @relation(fields: [contactId], references: [id])
 
+  @@index([contactId])
   @@map("emails")
 }
 
@@ -46,6 +61,7 @@ model PhoneNumber {
 
   contact Contact @relation(fields: [contactId], references: [id])
 
+  @@index([contactId])
   @@map("phone_numbers")
 }
 
@@ -67,7 +83,31 @@ model SocialNetwork {
   contact Contact           @relation(fields: [contactId], references: [id])
   type    SocialNetworkType @relation(fields: [typeId], references: [id])
 
+  @@index([contactId])
   @@map("social_networks")
+}
+
+model ImportantDateType {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  date ImportantDate[]
+
+  @@map("important_date_types")
+}
+
+model ImportantDate {
+  id        Int      @id @default(autoincrement())
+  contactId Int      @map("contact_id")
+  typeId    Int      @map("type_id")
+  value     DateTime
+  notes     String?
+
+  contact Contact           @relation(fields: [contactId], references: [id])
+  type    ImportantDateType @relation(fields: [typeId], references: [id])
+
+  @@index([contactId])
+  @@map("important_dates")
 }
 
 model RelationType {
@@ -92,5 +132,7 @@ model Relation {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@id([id1, id2, typeId])
-  @@map("relatoins")
+  @@index([id1])
+  @@index([id2])
+  @@map("relations")
 }
