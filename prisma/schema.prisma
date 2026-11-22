@@ -36,9 +36,6 @@ model Email {
 
   contact Contact @relation(fields: [contactId], references: [id])
 
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
   @@map("emails")
 }
 
@@ -48,9 +45,6 @@ model PhoneNumber {
   phone     String
 
   contact Contact @relation(fields: [contactId], references: [id])
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("phone_numbers")
 }
@@ -72,9 +66,6 @@ model SocialNetwork {
 
   contact Contact           @relation(fields: [contactId], references: [id])
   type    SocialNetworkType @relation(fields: [typeId], references: [id])
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("social_networks")
 }
