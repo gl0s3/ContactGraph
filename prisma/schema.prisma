@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  category String?
+  adress   String?
+  notes    String?
+
+  emails         Email[]
+  phoneNumbers   PhoneNumber[]
+  socialNetworks SocialNetwork[]
+
+  relation1 Relation[] @relation("Contact1")
+  relation2 Relation[] @relation("Contact2")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("contacts")
+}
+
+model Email {
+  id        Int    @id @default(autoincrement())
+  contactId Int    @map("contact_id")
+  email     String
+
+  contact Contact @relation(fields: [contactId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("emails")
+}
+
+model PhoneNumber {
+  id        Int    @id @default(autoincrement())
+  contactId Int    @map("contact_id")
+  phone     String
+
+  contact Contact @relation(fields: [contactId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("phone_numbers")
+}
+
+model SocialNetworkType {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  socialNetwork SocialNetwork[]
+
+  @@map("social_network_types")
+}
+
+model SocialNetwork {
+  id        Int    @id @default(autoincrement())
+  contactId Int    @map("contact_id")
+  typeId    Int    @map("type_id")
+  value     String
+
+  contact Contact           @relation(fields: [contactId], references: [id])
+  type    SocialNetworkType @relation(fields: [typeId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("social_networks")
+}
+
+model RelationType {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  relations Relation[]
+
+  @@map("relation_types")
+}
+
+model Relation {
+  id1    Int
+  id2    Int
+  typeId Int @map("type_id")
+
+  contact2 Contact      @relation("Contact1", fields: [id1], references: [id])
+  contact1 Contact      @relation("Contact2", fields: [id2], references: [id])
+  type     RelationType @relation(fields: [typeId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@id([id1, id2, typeId])
+  @@map("relatoins")
+}
