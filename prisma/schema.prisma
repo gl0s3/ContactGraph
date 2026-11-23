@@ -19,9 +19,7 @@ model Contact {
   address        String?
   notes          String?
 
-  emails         Email[]
-  phoneNumbers   PhoneNumber[]
-  socialNetworks SocialNetwork[]
+  contactMethods ContactMethod[]
   importantDate  ImportantDate[]
 
   relation1 Relation[]    @relation("Contact1")
@@ -43,48 +41,27 @@ model CategoryType {
   @@map("category_types")
 }
 
-model Email {
-  id        Int    @id @default(autoincrement())
-  contactId Int    @map("contact_id")
-  email     String
-
-  contact Contact @relation(fields: [contactId], references: [id])
-
-  @@index([contactId])
-  @@map("emails")
-}
-
-model PhoneNumber {
-  id        Int    @id @default(autoincrement())
-  contactId Int    @map("contact_id")
-  phone     String
-
-  contact Contact @relation(fields: [contactId], references: [id])
-
-  @@index([contactId])
-  @@map("phone_numbers")
-}
-
-model SocialNetworkType {
+model ContactMethodType {
   id   Int    @id @default(autoincrement())
   name String @unique
 
-  socialNetwork SocialNetwork[]
+  contactMethod ContactMethod[]
 
-  @@map("social_network_types")
+  @@map("contact_method_types")
 }
 
-model SocialNetwork {
+model ContactMethod {
   id        Int    @id @default(autoincrement())
   contactId Int    @map("contact_id")
   typeId    Int    @map("type_id")
   value     String
 
   contact Contact           @relation(fields: [contactId], references: [id])
-  type    SocialNetworkType @relation(fields: [typeId], references: [id])
+  type    ContactMethodType @relation(fields: [typeId], references: [id])
 
   @@index([contactId])
-  @@map("social_networks")
+  @@index([typeId])
+  @@map("contact_methods")
 }
 
 model ImportantDateType {
