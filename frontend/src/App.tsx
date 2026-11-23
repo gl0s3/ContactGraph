@@ -1,122 +1,298 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+import { useEffect, useState, type FormEvent } from "react";
+import "./App.css";
 
-  return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+interface Contact {
+  id: number;
+  name: string;
+  lastName?: string | null;
+  address?: string | null;
+  notes?: string | null;
 }
 
-export default App
+interface ContactForm {
+  name: string;
+  lastName: string;
+  address: string;
+  notes: string;
+}
+
+const emptyForm: ContactForm = {
+  name: "",
+  lastName: "",
+  address: "",
+  notes: "",
+};
+
+export default function App() {
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [form, setForm] = useState<ContactForm>({ ...emptyForm });
+
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  // GET — получить все контакты
+  async function loadContacts() {
+    setLoading(true);
+
+    try {
+      const response = await fetch("/contacts");
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const data: Contact[] = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Сервер вернул неверный формат данных");
+      }
+
+      setContacts(data);
+      setError("");
+    } catch (err) {
+      console.error("Ошибка загрузки:", err);
+      setError("Не удалось загрузить контакты");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // Загрузка при открытии страницы
+  useEffect(() => {
+    void loadContacts();
+  }, []);
+
+  // POST / PUT — добавить или изменить контакт
+  async function save(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!form.name.trim()) return;
+
+    const isEditing = editingId !== null;
+
+    const url = isEditing
+      ? `/contacts/${editingId}`
+      : "/contacts";
+
+    setSaving(true);
+
+    try {
+      const response = await fetch(url, {
+        method: isEditing ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: form.name.trim(),
+          lastName: form.lastName.trim(),
+          address: form.address.trim(),
+          notes: form.notes.trim(),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      cancel();
+      await loadContacts();
+    } catch (err) {
+      console.error("Ошибка сохранения:", err);
+      setError("Не удалось сохранить контакт");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  // Заполнить форму для редактирования
+  function edit(contact: Contact) {
+    setEditingId(contact.id);
+
+    setForm({
+      name: contact.name,
+      lastName: contact.lastName ?? "",
+      address: contact.address ?? "",
+      notes: contact.notes ?? "",
+    });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // Очистить форму
+  function cancel() {
+    setEditingId(null);
+    setForm({ ...emptyForm });
+  }
+
+  // DELETE — удалить контакт
+  async function remove(id: number) {
+    if (!window.confirm("Удалить контакт?")) return;
+
+    try {
+      const response = await fetch(`/contacts/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      if (editingId === id) cancel();
+
+      await loadContacts();
+    } catch (err) {
+      console.error("Ошибка удаления:", err);
+      setError("Не удалось удалить контакт");
+    }
+  }
+
+  return (
+    <main className="container">
+      <header>
+        <h1>ContactGraph</h1>
+        <p>Управление контактами</p>
+      </header>
+
+      <section>
+        <h2>
+          {editingId === null
+            ? "Добавить контакт"
+            : "Редактировать контакт"}
+        </h2>
+
+        <form onSubmit={save}>
+          <div className="fields">
+            <input
+              placeholder="Имя *"
+              required
+              value={form.name}
+              onChange={(e) =>
+                setForm({ ...form, name: e.target.value })
+              }
+            />
+
+            <input
+              placeholder="Фамилия"
+              value={form.lastName}
+              onChange={(e) =>
+                setForm({ ...form, lastName: e.target.value })
+              }
+            />
+
+            <input
+              placeholder="Адрес"
+              value={form.address}
+              onChange={(e) =>
+                setForm({ ...form, address: e.target.value })
+              }
+            />
+
+            <input
+              placeholder="Заметки"
+              value={form.notes}
+              onChange={(e) =>
+                setForm({ ...form, notes: e.target.value })
+              }
+            />
+          </div>
+
+          <div className="buttons">
+            <button type="submit" disabled={saving}>
+              {saving
+                ? "Сохранение..."
+                : editingId === null
+                  ? "Добавить"
+                  : "Сохранить"}
+            </button>
+
+            {editingId !== null && (
+              <button type="button" onClick={cancel}>
+                Отмена
+              </button>
+            )}
+          </div>
+        </form>
+      </section>
+
+      <section>
+        <h2>Контакты ({contacts.length})</h2>
+
+        {error && (
+          <p
+            role="alert"
+            style={{
+              color: "red",
+              marginBottom: 16,
+            }}
+          >
+            {error}
+          </p>
+        )}
+
+        <div style={{ marginBottom: 16 }}>
+          <button
+            type="button"
+            onClick={() => void loadContacts()}
+            disabled={loading}
+          >
+            Обновить список
+          </button>
+        </div>
+
+        {loading ? (
+          <p>Загрузка контактов...</p>
+        ) : contacts.length === 0 ? (
+          <p>Контактов пока нет.</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Имя</th>
+                <th>Адрес</th>
+                <th>Заметки</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {contacts.map((contact) => (
+                <tr key={contact.id}>
+                  <td>{contact.id}</td>
+
+                  <td>
+                    {contact.name} {contact.lastName ?? ""}
+                  </td>
+
+                  <td>{contact.address || "—"}</td>
+                  <td>{contact.notes || "—"}</td>
+
+                  <td className="actions">
+                    <button
+                      type="button"
+                      title="Редактировать"
+                      onClick={() => edit(contact)}
+                    >
+                      ✎
+                    </button>
+
+                    <button
+                      type="button"
+                      title="Удалить"
+                      onClick={() => void remove(contact.id)}
+                    >
+                      ×
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </section>
+    </main>
+  );
+}
