@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  secondName String? @map("second_name")
+  lastName   String? @map("last_name")
+
+  categoryTypeId Int?
+  address        String?
+  notes          String?
+
+  contactMethods ContactMethod[]
+  importantDate  ImportantDate[]
+
+  relation1 Relation[]    @relation("Contact1")
+  relation2 Relation[]    @relation("Contact2")
+  category  CategoryType? @relation(fields: [categoryTypeId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("contacts")
+}
+
+model CategoryType {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  contacts Contact[]
+
+  @@map("category_types")
+}
+
+model ContactMethodType {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  contactMethod ContactMethod[]
+
+  @@map("contact_method_types")
+}
+
+model ContactMethod {
+  id        Int    @id @default(autoincrement())
+  contactId Int    @map("contact_id")
+  typeId    Int    @map("type_id")
+  value     String
+
+  contact Contact           @relation(fields: [contactId], references: [id])
+  type    ContactMethodType @relation(fields: [typeId], references: [id])
+
+  @@index([contactId])
+  @@index([typeId])
+  @@map("contact_methods")
+}
+
+model ImportantDateType {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  date ImportantDate[]
+
+  @@map("important_date_types")
+}
+
+model ImportantDate {
+  id        Int      @id @default(autoincrement())
+  contactId Int      @map("contact_id")
+  typeId    Int      @map("type_id")
+  value     DateTime
+  notes     String?
+
+  contact Contact           @relation(fields: [contactId], references: [id])
+  type    ImportantDateType @relation(fields: [typeId], references: [id])
+
+  @@index([contactId])
+  @@map("important_dates")
+}
+
+model RelationType {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  relations Relation[]
+
+  @@map("relation_types")
+}
+
+model Relation {
+  id1    Int
+  id2    Int
+  typeId Int @map("type_id")
+
+  contact2 Contact      @relation("Contact1", fields: [id1], references: [id])
+  contact1 Contact      @relation("Contact2", fields: [id2], references: [id])
+  type     RelationType @relation(fields: [typeId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@id([id1, id2, typeId])
+  @@index([id1])
+  @@index([id2])
+  @@map("relations")
+}
