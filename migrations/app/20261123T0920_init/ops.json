@@ -1,0 +1,834 @@
+[
+  {
+    "id": "table.category_types",
+    "label": "Create table category_types",
+    "summary": "Creates table category_types with required columns",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "table",
+        "name": "category_types"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"category_types\" does not exist",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "category_types"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"category_types\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"category_types\"",
+        "sql": "CREATE TABLE \"category_types\" (\n  \"id\" INTEGER PRIMARY KEY AUTOINCREMENT,\n  \"name\" TEXT NOT NULL,\n  UNIQUE (\"name\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"category_types\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "category_types"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"category_types\""
+        }
+      },
+      {
+        "description": "verify table \"category_types\" has exactly its columns",
+        "sql": "SELECT (SELECT COUNT(*) FROM pragma_table_info('category_types')) = 2 AND (SELECT COUNT(*) FROM pragma_table_info('category_types') WHERE (name, LOWER(type), \"notnull\", pk) IN (VALUES ('id', 'integer', 0, 1), ('name', 'text', 1, 0))) = 2"
+      }
+    ]
+  },
+  {
+    "id": "table.contact_method_types",
+    "label": "Create table contact_method_types",
+    "summary": "Creates table contact_method_types with required columns",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "table",
+        "name": "contact_method_types"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"contact_method_types\" does not exist",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "contact_method_types"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"contact_method_types\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"contact_method_types\"",
+        "sql": "CREATE TABLE \"contact_method_types\" (\n  \"id\" INTEGER PRIMARY KEY AUTOINCREMENT,\n  \"name\" TEXT NOT NULL,\n  UNIQUE (\"name\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"contact_method_types\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "contact_method_types"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"contact_method_types\""
+        }
+      },
+      {
+        "description": "verify table \"contact_method_types\" has exactly its columns",
+        "sql": "SELECT (SELECT COUNT(*) FROM pragma_table_info('contact_method_types')) = 2 AND (SELECT COUNT(*) FROM pragma_table_info('contact_method_types') WHERE (name, LOWER(type), \"notnull\", pk) IN (VALUES ('id', 'integer', 0, 1), ('name', 'text', 1, 0))) = 2"
+      }
+    ]
+  },
+  {
+    "id": "table.contact_methods",
+    "label": "Create table contact_methods",
+    "summary": "Creates table contact_methods with required columns",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "table",
+        "name": "contact_methods"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"contact_methods\" does not exist",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "contact_methods"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"contact_methods\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"contact_methods\"",
+        "sql": "CREATE TABLE \"contact_methods\" (\n  \"contact_id\" INTEGER NOT NULL,\n  \"id\" INTEGER PRIMARY KEY AUTOINCREMENT,\n  \"type_id\" INTEGER NOT NULL,\n  \"value\" TEXT NOT NULL,\n  FOREIGN KEY (\"contact_id\") REFERENCES \"contacts\" (\"id\"),\n  FOREIGN KEY (\"type_id\") REFERENCES \"contact_method_types\" (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"contact_methods\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "contact_methods"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"contact_methods\""
+        }
+      },
+      {
+        "description": "verify table \"contact_methods\" has exactly its columns",
+        "sql": "SELECT (SELECT COUNT(*) FROM pragma_table_info('contact_methods')) = 4 AND (SELECT COUNT(*) FROM pragma_table_info('contact_methods') WHERE (name, LOWER(type), \"notnull\", pk) IN (VALUES ('contact_id', 'integer', 1, 0), ('id', 'integer', 0, 1), ('type_id', 'integer', 1, 0), ('value', 'text', 1, 0))) = 4"
+      }
+    ]
+  },
+  {
+    "id": "table.contacts",
+    "label": "Create table contacts",
+    "summary": "Creates table contacts with required columns",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "table",
+        "name": "contacts"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"contacts\" does not exist",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "contacts"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"contacts\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"contacts\"",
+        "sql": "CREATE TABLE \"contacts\" (\n  \"address\" TEXT,\n  \"categoryTypeId\" INTEGER,\n  \"created_at\" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),\n  \"id\" INTEGER PRIMARY KEY AUTOINCREMENT,\n  \"last_name\" TEXT,\n  \"name\" TEXT NOT NULL,\n  \"notes\" TEXT,\n  \"second_name\" TEXT,\n  \"updatedAt\" TEXT NOT NULL,\n  FOREIGN KEY (\"categoryTypeId\") REFERENCES \"category_types\" (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"contacts\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "contacts"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"contacts\""
+        }
+      },
+      {
+        "description": "verify table \"contacts\" has exactly its columns",
+        "sql": "SELECT (SELECT COUNT(*) FROM pragma_table_info('contacts')) = 9 AND (SELECT COUNT(*) FROM pragma_table_info('contacts') WHERE (name, LOWER(type), \"notnull\", pk) IN (VALUES ('address', 'text', 0, 0), ('categoryTypeId', 'integer', 0, 0), ('created_at', 'text', 1, 0), ('id', 'integer', 0, 1), ('last_name', 'text', 0, 0), ('name', 'text', 1, 0), ('notes', 'text', 0, 0), ('second_name', 'text', 0, 0), ('updatedAt', 'text', 1, 0))) = 9"
+      }
+    ]
+  },
+  {
+    "id": "table.important_date_types",
+    "label": "Create table important_date_types",
+    "summary": "Creates table important_date_types with required columns",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "table",
+        "name": "important_date_types"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"important_date_types\" does not exist",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "important_date_types"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"important_date_types\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"important_date_types\"",
+        "sql": "CREATE TABLE \"important_date_types\" (\n  \"id\" INTEGER PRIMARY KEY AUTOINCREMENT,\n  \"name\" TEXT NOT NULL,\n  UNIQUE (\"name\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"important_date_types\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "important_date_types"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"important_date_types\""
+        }
+      },
+      {
+        "description": "verify table \"important_date_types\" has exactly its columns",
+        "sql": "SELECT (SELECT COUNT(*) FROM pragma_table_info('important_date_types')) = 2 AND (SELECT COUNT(*) FROM pragma_table_info('important_date_types') WHERE (name, LOWER(type), \"notnull\", pk) IN (VALUES ('id', 'integer', 0, 1), ('name', 'text', 1, 0))) = 2"
+      }
+    ]
+  },
+  {
+    "id": "table.important_dates",
+    "label": "Create table important_dates",
+    "summary": "Creates table important_dates with required columns",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "table",
+        "name": "important_dates"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"important_dates\" does not exist",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "important_dates"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"important_dates\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"important_dates\"",
+        "sql": "CREATE TABLE \"important_dates\" (\n  \"contact_id\" INTEGER NOT NULL,\n  \"id\" INTEGER PRIMARY KEY AUTOINCREMENT,\n  \"notes\" TEXT,\n  \"type_id\" INTEGER NOT NULL,\n  \"value\" TEXT NOT NULL,\n  FOREIGN KEY (\"contact_id\") REFERENCES \"contacts\" (\"id\"),\n  FOREIGN KEY (\"type_id\") REFERENCES \"important_date_types\" (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"important_dates\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "important_dates"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"important_dates\""
+        }
+      },
+      {
+        "description": "verify table \"important_dates\" has exactly its columns",
+        "sql": "SELECT (SELECT COUNT(*) FROM pragma_table_info('important_dates')) = 5 AND (SELECT COUNT(*) FROM pragma_table_info('important_dates') WHERE (name, LOWER(type), \"notnull\", pk) IN (VALUES ('contact_id', 'integer', 1, 0), ('id', 'integer', 0, 1), ('notes', 'text', 0, 0), ('type_id', 'integer', 1, 0), ('value', 'text', 1, 0))) = 5"
+      }
+    ]
+  },
+  {
+    "id": "table.relation_types",
+    "label": "Create table relation_types",
+    "summary": "Creates table relation_types with required columns",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "table",
+        "name": "relation_types"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"relation_types\" does not exist",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "relation_types"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"relation_types\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"relation_types\"",
+        "sql": "CREATE TABLE \"relation_types\" (\n  \"id\" INTEGER PRIMARY KEY AUTOINCREMENT,\n  \"name\" TEXT NOT NULL,\n  UNIQUE (\"name\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"relation_types\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "relation_types"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"relation_types\""
+        }
+      },
+      {
+        "description": "verify table \"relation_types\" has exactly its columns",
+        "sql": "SELECT (SELECT COUNT(*) FROM pragma_table_info('relation_types')) = 2 AND (SELECT COUNT(*) FROM pragma_table_info('relation_types') WHERE (name, LOWER(type), \"notnull\", pk) IN (VALUES ('id', 'integer', 0, 1), ('name', 'text', 1, 0))) = 2"
+      }
+    ]
+  },
+  {
+    "id": "table.relations",
+    "label": "Create table relations",
+    "summary": "Creates table relations with required columns",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "table",
+        "name": "relations"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"relations\" does not exist",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "relations"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "table \"relations\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"relations\"",
+        "sql": "CREATE TABLE \"relations\" (\n  \"created_at\" TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ','now')),\n  \"id1\" INTEGER NOT NULL,\n  \"id2\" INTEGER NOT NULL,\n  \"type_id\" INTEGER NOT NULL,\n  \"updatedAt\" TEXT NOT NULL,\n  PRIMARY KEY (\"id1\", \"id2\", \"type_id\"),\n  FOREIGN KEY (\"id1\") REFERENCES \"contacts\" (\"id\"),\n  FOREIGN KEY (\"id2\") REFERENCES \"contacts\" (\"id\"),\n  FOREIGN KEY (\"type_id\") REFERENCES \"relation_types\" (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"relations\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "table",
+          "relations"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "table \"relations\""
+        }
+      },
+      {
+        "description": "verify table \"relations\" has exactly its columns",
+        "sql": "SELECT (SELECT COUNT(*) FROM pragma_table_info('relations')) = 5 AND (SELECT COUNT(*) FROM pragma_table_info('relations') WHERE (name, LOWER(type), \"notnull\", pk) IN (VALUES ('created_at', 'text', 1, 0), ('id1', 'integer', 1, 1), ('id2', 'integer', 1, 2), ('type_id', 'integer', 1, 3), ('updatedAt', 'text', 1, 0))) = 5"
+      }
+    ]
+  },
+  {
+    "id": "index.contact_methods.contact_methods_contact_id_idx_f6f6ad79",
+    "label": "Create index contact_methods_contact_id_idx_f6f6ad79 on contact_methods",
+    "summary": "Creates index contact_methods_contact_id_idx_f6f6ad79 on contact_methods",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "index",
+        "name": "contact_methods_contact_id_idx_f6f6ad79",
+        "table": "contact_methods"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"contact_methods_contact_id_idx_f6f6ad79\" is missing",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "contact_methods_contact_id_idx_f6f6ad79"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"contact_methods_contact_id_idx_f6f6ad79\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"contact_methods_contact_id_idx_f6f6ad79\"",
+        "sql": "CREATE INDEX \"contact_methods_contact_id_idx_f6f6ad79\" ON \"contact_methods\" (\"contact_id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"contact_methods_contact_id_idx_f6f6ad79\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "contact_methods_contact_id_idx_f6f6ad79"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "index \"contact_methods_contact_id_idx_f6f6ad79\""
+        }
+      },
+      {
+        "description": "verify index \"contact_methods_contact_id_idx_f6f6ad79\" on \"contact_methods\" covers (contact_id)",
+        "sql": "SELECT EXISTS (SELECT 1 FROM pragma_index_list('contact_methods') WHERE name = 'contact_methods_contact_id_idx_f6f6ad79' AND \"unique\" = 0) AND (SELECT COUNT(*) FROM pragma_index_info('contact_methods_contact_id_idx_f6f6ad79')) = 1 AND (SELECT COUNT(*) FROM pragma_index_info('contact_methods_contact_id_idx_f6f6ad79') WHERE (seqno, name) IN (VALUES (0, 'contact_id'))) = 1"
+      }
+    ]
+  },
+  {
+    "id": "index.contact_methods.contact_methods_type_id_idx_907568e1",
+    "label": "Create index contact_methods_type_id_idx_907568e1 on contact_methods",
+    "summary": "Creates index contact_methods_type_id_idx_907568e1 on contact_methods",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "index",
+        "name": "contact_methods_type_id_idx_907568e1",
+        "table": "contact_methods"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"contact_methods_type_id_idx_907568e1\" is missing",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "contact_methods_type_id_idx_907568e1"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"contact_methods_type_id_idx_907568e1\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"contact_methods_type_id_idx_907568e1\"",
+        "sql": "CREATE INDEX \"contact_methods_type_id_idx_907568e1\" ON \"contact_methods\" (\"type_id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"contact_methods_type_id_idx_907568e1\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "contact_methods_type_id_idx_907568e1"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "index \"contact_methods_type_id_idx_907568e1\""
+        }
+      },
+      {
+        "description": "verify index \"contact_methods_type_id_idx_907568e1\" on \"contact_methods\" covers (type_id)",
+        "sql": "SELECT EXISTS (SELECT 1 FROM pragma_index_list('contact_methods') WHERE name = 'contact_methods_type_id_idx_907568e1' AND \"unique\" = 0) AND (SELECT COUNT(*) FROM pragma_index_info('contact_methods_type_id_idx_907568e1')) = 1 AND (SELECT COUNT(*) FROM pragma_index_info('contact_methods_type_id_idx_907568e1') WHERE (seqno, name) IN (VALUES (0, 'type_id'))) = 1"
+      }
+    ]
+  },
+  {
+    "id": "index.contacts.contacts_categoryTypeId_idx_ff910a5e",
+    "label": "Create index contacts_categoryTypeId_idx_ff910a5e on contacts",
+    "summary": "Creates index contacts_categoryTypeId_idx_ff910a5e on contacts",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "index",
+        "name": "contacts_categoryTypeId_idx_ff910a5e",
+        "table": "contacts"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"contacts_categoryTypeId_idx_ff910a5e\" is missing",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "contacts_categoryTypeId_idx_ff910a5e"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"contacts_categoryTypeId_idx_ff910a5e\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"contacts_categoryTypeId_idx_ff910a5e\"",
+        "sql": "CREATE INDEX \"contacts_categoryTypeId_idx_ff910a5e\" ON \"contacts\" (\"categoryTypeId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"contacts_categoryTypeId_idx_ff910a5e\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "contacts_categoryTypeId_idx_ff910a5e"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "index \"contacts_categoryTypeId_idx_ff910a5e\""
+        }
+      },
+      {
+        "description": "verify index \"contacts_categoryTypeId_idx_ff910a5e\" on \"contacts\" covers (categoryTypeId)",
+        "sql": "SELECT EXISTS (SELECT 1 FROM pragma_index_list('contacts') WHERE name = 'contacts_categoryTypeId_idx_ff910a5e' AND \"unique\" = 0) AND (SELECT COUNT(*) FROM pragma_index_info('contacts_categoryTypeId_idx_ff910a5e')) = 1 AND (SELECT COUNT(*) FROM pragma_index_info('contacts_categoryTypeId_idx_ff910a5e') WHERE (seqno, name) IN (VALUES (0, 'categoryTypeId'))) = 1"
+      }
+    ]
+  },
+  {
+    "id": "index.important_dates.important_dates_contact_id_idx_f6f6ad79",
+    "label": "Create index important_dates_contact_id_idx_f6f6ad79 on important_dates",
+    "summary": "Creates index important_dates_contact_id_idx_f6f6ad79 on important_dates",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "index",
+        "name": "important_dates_contact_id_idx_f6f6ad79",
+        "table": "important_dates"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"important_dates_contact_id_idx_f6f6ad79\" is missing",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "important_dates_contact_id_idx_f6f6ad79"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"important_dates_contact_id_idx_f6f6ad79\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"important_dates_contact_id_idx_f6f6ad79\"",
+        "sql": "CREATE INDEX \"important_dates_contact_id_idx_f6f6ad79\" ON \"important_dates\" (\"contact_id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"important_dates_contact_id_idx_f6f6ad79\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "important_dates_contact_id_idx_f6f6ad79"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "index \"important_dates_contact_id_idx_f6f6ad79\""
+        }
+      },
+      {
+        "description": "verify index \"important_dates_contact_id_idx_f6f6ad79\" on \"important_dates\" covers (contact_id)",
+        "sql": "SELECT EXISTS (SELECT 1 FROM pragma_index_list('important_dates') WHERE name = 'important_dates_contact_id_idx_f6f6ad79' AND \"unique\" = 0) AND (SELECT COUNT(*) FROM pragma_index_info('important_dates_contact_id_idx_f6f6ad79')) = 1 AND (SELECT COUNT(*) FROM pragma_index_info('important_dates_contact_id_idx_f6f6ad79') WHERE (seqno, name) IN (VALUES (0, 'contact_id'))) = 1"
+      }
+    ]
+  },
+  {
+    "id": "index.important_dates.important_dates_type_id_idx_907568e1",
+    "label": "Create index important_dates_type_id_idx_907568e1 on important_dates",
+    "summary": "Creates index important_dates_type_id_idx_907568e1 on important_dates",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "index",
+        "name": "important_dates_type_id_idx_907568e1",
+        "table": "important_dates"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"important_dates_type_id_idx_907568e1\" is missing",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "important_dates_type_id_idx_907568e1"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"important_dates_type_id_idx_907568e1\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"important_dates_type_id_idx_907568e1\"",
+        "sql": "CREATE INDEX \"important_dates_type_id_idx_907568e1\" ON \"important_dates\" (\"type_id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"important_dates_type_id_idx_907568e1\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "important_dates_type_id_idx_907568e1"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "index \"important_dates_type_id_idx_907568e1\""
+        }
+      },
+      {
+        "description": "verify index \"important_dates_type_id_idx_907568e1\" on \"important_dates\" covers (type_id)",
+        "sql": "SELECT EXISTS (SELECT 1 FROM pragma_index_list('important_dates') WHERE name = 'important_dates_type_id_idx_907568e1' AND \"unique\" = 0) AND (SELECT COUNT(*) FROM pragma_index_info('important_dates_type_id_idx_907568e1')) = 1 AND (SELECT COUNT(*) FROM pragma_index_info('important_dates_type_id_idx_907568e1') WHERE (seqno, name) IN (VALUES (0, 'type_id'))) = 1"
+      }
+    ]
+  },
+  {
+    "id": "index.relations.relations_id1_idx_fbe90e91",
+    "label": "Create index relations_id1_idx_fbe90e91 on relations",
+    "summary": "Creates index relations_id1_idx_fbe90e91 on relations",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "index",
+        "name": "relations_id1_idx_fbe90e91",
+        "table": "relations"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"relations_id1_idx_fbe90e91\" is missing",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "relations_id1_idx_fbe90e91"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"relations_id1_idx_fbe90e91\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"relations_id1_idx_fbe90e91\"",
+        "sql": "CREATE INDEX \"relations_id1_idx_fbe90e91\" ON \"relations\" (\"id1\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"relations_id1_idx_fbe90e91\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "relations_id1_idx_fbe90e91"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "index \"relations_id1_idx_fbe90e91\""
+        }
+      },
+      {
+        "description": "verify index \"relations_id1_idx_fbe90e91\" on \"relations\" covers (id1)",
+        "sql": "SELECT EXISTS (SELECT 1 FROM pragma_index_list('relations') WHERE name = 'relations_id1_idx_fbe90e91' AND \"unique\" = 0) AND (SELECT COUNT(*) FROM pragma_index_info('relations_id1_idx_fbe90e91')) = 1 AND (SELECT COUNT(*) FROM pragma_index_info('relations_id1_idx_fbe90e91') WHERE (seqno, name) IN (VALUES (0, 'id1'))) = 1"
+      }
+    ]
+  },
+  {
+    "id": "index.relations.relations_id2_idx_0229a7ab",
+    "label": "Create index relations_id2_idx_0229a7ab on relations",
+    "summary": "Creates index relations_id2_idx_0229a7ab on relations",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "index",
+        "name": "relations_id2_idx_0229a7ab",
+        "table": "relations"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"relations_id2_idx_0229a7ab\" is missing",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "relations_id2_idx_0229a7ab"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"relations_id2_idx_0229a7ab\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"relations_id2_idx_0229a7ab\"",
+        "sql": "CREATE INDEX \"relations_id2_idx_0229a7ab\" ON \"relations\" (\"id2\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"relations_id2_idx_0229a7ab\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "relations_id2_idx_0229a7ab"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "index \"relations_id2_idx_0229a7ab\""
+        }
+      },
+      {
+        "description": "verify index \"relations_id2_idx_0229a7ab\" on \"relations\" covers (id2)",
+        "sql": "SELECT EXISTS (SELECT 1 FROM pragma_index_list('relations') WHERE name = 'relations_id2_idx_0229a7ab' AND \"unique\" = 0) AND (SELECT COUNT(*) FROM pragma_index_info('relations_id2_idx_0229a7ab')) = 1 AND (SELECT COUNT(*) FROM pragma_index_info('relations_id2_idx_0229a7ab') WHERE (seqno, name) IN (VALUES (0, 'id2'))) = 1"
+      }
+    ]
+  },
+  {
+    "id": "index.relations.relations_type_id_idx_907568e1",
+    "label": "Create index relations_type_id_idx_907568e1 on relations",
+    "summary": "Creates index relations_type_id_idx_907568e1 on relations",
+    "operationClass": "additive",
+    "target": {
+      "id": "sqlite",
+      "details": {
+        "objectType": "index",
+        "name": "relations_type_id_idx_907568e1",
+        "table": "relations"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"relations_type_id_idx_907568e1\" is missing",
+        "sql": "SELECT COUNT(*) = 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "relations_type_id_idx_907568e1"
+        ],
+        "expectation": {
+          "expects": "absent",
+          "object": "index \"relations_type_id_idx_907568e1\""
+        }
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"relations_type_id_idx_907568e1\"",
+        "sql": "CREATE INDEX \"relations_type_id_idx_907568e1\" ON \"relations\" (\"type_id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"relations_type_id_idx_907568e1\" exists",
+        "sql": "SELECT COUNT(*) > 0 AS \"result\" FROM \"sqlite_master\" WHERE (\"type\" = ?1 AND \"name\" = ?2)",
+        "params": [
+          "index",
+          "relations_type_id_idx_907568e1"
+        ],
+        "expectation": {
+          "expects": "present",
+          "object": "index \"relations_type_id_idx_907568e1\""
+        }
+      },
+      {
+        "description": "verify index \"relations_type_id_idx_907568e1\" on \"relations\" covers (type_id)",
+        "sql": "SELECT EXISTS (SELECT 1 FROM pragma_index_list('relations') WHERE name = 'relations_type_id_idx_907568e1' AND \"unique\" = 0) AND (SELECT COUNT(*) FROM pragma_index_info('relations_type_id_idx_907568e1')) = 1 AND (SELECT COUNT(*) FROM pragma_index_info('relations_type_id_idx_907568e1') WHERE (seqno, name) IN (VALUES (0, 'type_id'))) = 1"
+      }
+    ]
+  }
+]

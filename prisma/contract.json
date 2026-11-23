@@ -1,0 +1,1307 @@
+{
+  "schemaVersion": "1",
+  "targetFamily": "sql",
+  "target": "sqlite",
+  "profileHash": "260b8608d1aacaf1f690779a6cff39a12947c599597c5ba464ca75b9e775df53",
+  "roots": {
+    "category_types": {
+      "model": "CategoryType",
+      "namespace": "__unbound__"
+    },
+    "contact_method_types": {
+      "model": "ContactMethodType",
+      "namespace": "__unbound__"
+    },
+    "contact_methods": {
+      "model": "ContactMethod",
+      "namespace": "__unbound__"
+    },
+    "contacts": {
+      "model": "Contact",
+      "namespace": "__unbound__"
+    },
+    "important_date_types": {
+      "model": "ImportantDateType",
+      "namespace": "__unbound__"
+    },
+    "important_dates": {
+      "model": "ImportantDate",
+      "namespace": "__unbound__"
+    },
+    "relation_types": {
+      "model": "RelationType",
+      "namespace": "__unbound__"
+    },
+    "relations": {
+      "model": "Relation",
+      "namespace": "__unbound__"
+    }
+  },
+  "domain": {
+    "namespaces": {
+      "__unbound__": {
+        "models": {
+          "CategoryType": {
+            "fields": {
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "contacts": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "categoryTypeId"
+                  ]
+                },
+                "to": {
+                  "model": "Contact",
+                  "namespace": "__unbound__"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                }
+              },
+              "namespaceId": "__unbound__",
+              "table": "category_types"
+            }
+          },
+          "Contact": {
+            "fields": {
+              "address": {
+                "nullable": true,
+                "type": {
+                  "codecId": "sqlite/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "categoryTypeId": {
+                "nullable": true,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/datetime@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "lastName": {
+                "nullable": true,
+                "type": {
+                  "codecId": "sqlite/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "notes": {
+                "nullable": true,
+                "type": {
+                  "codecId": "sqlite/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "secondName": {
+                "nullable": true,
+                "type": {
+                  "codecId": "sqlite/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/datetime@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "category": {
+                "cardinality": "N:1",
+                "nullable": true,
+                "on": {
+                  "localFields": [
+                    "categoryTypeId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "CategoryType",
+                  "namespace": "__unbound__"
+                }
+              },
+              "contactMethods": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "contactId"
+                  ]
+                },
+                "to": {
+                  "model": "ContactMethod",
+                  "namespace": "__unbound__"
+                }
+              },
+              "importantDate": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "contactId"
+                  ]
+                },
+                "to": {
+                  "model": "ImportantDate",
+                  "namespace": "__unbound__"
+                }
+              },
+              "relation1": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "id1"
+                  ]
+                },
+                "to": {
+                  "model": "Relation",
+                  "namespace": "__unbound__"
+                }
+              },
+              "relation2": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "id2"
+                  ]
+                },
+                "to": {
+                  "model": "Relation",
+                  "namespace": "__unbound__"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "address": {
+                  "column": "address"
+                },
+                "categoryTypeId": {
+                  "column": "categoryTypeId"
+                },
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "lastName": {
+                  "column": "last_name"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "notes": {
+                  "column": "notes"
+                },
+                "secondName": {
+                  "column": "second_name"
+                },
+                "updatedAt": {
+                  "column": "updatedAt"
+                }
+              },
+              "namespaceId": "__unbound__",
+              "table": "contacts"
+            }
+          },
+          "ContactMethod": {
+            "fields": {
+              "contactId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "typeId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "value": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "contact": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "contactId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Contact",
+                  "namespace": "__unbound__"
+                }
+              },
+              "type": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "typeId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "ContactMethodType",
+                  "namespace": "__unbound__"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "contactId": {
+                  "column": "contact_id"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "typeId": {
+                  "column": "type_id"
+                },
+                "value": {
+                  "column": "value"
+                }
+              },
+              "namespaceId": "__unbound__",
+              "table": "contact_methods"
+            }
+          },
+          "ContactMethodType": {
+            "fields": {
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "contactMethod": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "typeId"
+                  ]
+                },
+                "to": {
+                  "model": "ContactMethod",
+                  "namespace": "__unbound__"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                }
+              },
+              "namespaceId": "__unbound__",
+              "table": "contact_method_types"
+            }
+          },
+          "ImportantDate": {
+            "fields": {
+              "contactId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "notes": {
+                "nullable": true,
+                "type": {
+                  "codecId": "sqlite/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "typeId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "value": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/datetime@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "contact": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "contactId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Contact",
+                  "namespace": "__unbound__"
+                }
+              },
+              "type": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "typeId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "ImportantDateType",
+                  "namespace": "__unbound__"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "contactId": {
+                  "column": "contact_id"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "notes": {
+                  "column": "notes"
+                },
+                "typeId": {
+                  "column": "type_id"
+                },
+                "value": {
+                  "column": "value"
+                }
+              },
+              "namespaceId": "__unbound__",
+              "table": "important_dates"
+            }
+          },
+          "ImportantDateType": {
+            "fields": {
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "date": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "typeId"
+                  ]
+                },
+                "to": {
+                  "model": "ImportantDate",
+                  "namespace": "__unbound__"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                }
+              },
+              "namespaceId": "__unbound__",
+              "table": "important_date_types"
+            }
+          },
+          "Relation": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/datetime@1",
+                  "kind": "scalar"
+                }
+              },
+              "id1": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "id2": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "typeId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "updatedAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/datetime@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "contact1": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "id2"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Contact",
+                  "namespace": "__unbound__"
+                }
+              },
+              "contact2": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "id1"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Contact",
+                  "namespace": "__unbound__"
+                }
+              },
+              "type": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "typeId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "RelationType",
+                  "namespace": "__unbound__"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id1": {
+                  "column": "id1"
+                },
+                "id2": {
+                  "column": "id2"
+                },
+                "typeId": {
+                  "column": "type_id"
+                },
+                "updatedAt": {
+                  "column": "updatedAt"
+                }
+              },
+              "namespaceId": "__unbound__",
+              "table": "relations"
+            }
+          },
+          "RelationType": {
+            "fields": {
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/integer@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sqlite/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "relations": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "typeId"
+                  ]
+                },
+                "to": {
+                  "model": "Relation",
+                  "namespace": "__unbound__"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                }
+              },
+              "namespaceId": "__unbound__",
+              "table": "relation_types"
+            }
+          }
+        }
+      }
+    }
+  },
+  "storage": {
+    "namespaces": {
+      "__unbound__": {
+        "entries": {
+          "table": {
+            "category_types": {
+              "columns": {
+                "id": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "sqlite/text@1",
+                  "dataType": "sqlite/text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "name"
+                  ]
+                }
+              ]
+            },
+            "contact_method_types": {
+              "columns": {
+                "id": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "sqlite/text@1",
+                  "dataType": "sqlite/text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "name"
+                  ]
+                }
+              ]
+            },
+            "contact_methods": {
+              "columns": {
+                "contact_id": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "type_id": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "nullable": false
+                },
+                "value": {
+                  "codecId": "sqlite/text@1",
+                  "dataType": "sqlite/text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "index": {
+                    "name": "contact_methods_contact_id_idx_f6f6ad79"
+                  },
+                  "source": {
+                    "columns": [
+                      "contact_id"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "contact_methods"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "contacts"
+                  }
+                },
+                {
+                  "index": {
+                    "name": "contact_methods_type_id_idx_907568e1"
+                  },
+                  "source": {
+                    "columns": [
+                      "type_id"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "contact_methods"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "contact_method_types"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "contact_id"
+                  ],
+                  "name": "contact_methods_contact_id_idx_f6f6ad79",
+                  "prefix": "contact_methods_contact_id_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "type_id"
+                  ],
+                  "name": "contact_methods_type_id_idx_907568e1",
+                  "prefix": "contact_methods_type_id_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "contacts": {
+              "columns": {
+                "address": {
+                  "codecId": "sqlite/text@1",
+                  "dataType": "sqlite/text",
+                  "nullable": true
+                },
+                "categoryTypeId": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "nullable": true
+                },
+                "created_at": {
+                  "codecId": "sqlite/datetime@1",
+                  "dataType": "sqlite/datetime",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "last_name": {
+                  "codecId": "sqlite/text@1",
+                  "dataType": "sqlite/text",
+                  "nullable": true
+                },
+                "name": {
+                  "codecId": "sqlite/text@1",
+                  "dataType": "sqlite/text",
+                  "nullable": false
+                },
+                "notes": {
+                  "codecId": "sqlite/text@1",
+                  "dataType": "sqlite/text",
+                  "nullable": true
+                },
+                "second_name": {
+                  "codecId": "sqlite/text@1",
+                  "dataType": "sqlite/text",
+                  "nullable": true
+                },
+                "updatedAt": {
+                  "codecId": "sqlite/datetime@1",
+                  "dataType": "sqlite/datetime",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "index": {
+                    "name": "contacts_categoryTypeId_idx_ff910a5e"
+                  },
+                  "source": {
+                    "columns": [
+                      "categoryTypeId"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "contacts"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "category_types"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "categoryTypeId"
+                  ],
+                  "name": "contacts_categoryTypeId_idx_ff910a5e",
+                  "prefix": "contacts_categoryTypeId_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "important_date_types": {
+              "columns": {
+                "id": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "sqlite/text@1",
+                  "dataType": "sqlite/text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "name"
+                  ]
+                }
+              ]
+            },
+            "important_dates": {
+              "columns": {
+                "contact_id": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "notes": {
+                  "codecId": "sqlite/text@1",
+                  "dataType": "sqlite/text",
+                  "nullable": true
+                },
+                "type_id": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "nullable": false
+                },
+                "value": {
+                  "codecId": "sqlite/datetime@1",
+                  "dataType": "sqlite/datetime",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "index": {
+                    "name": "important_dates_contact_id_idx_f6f6ad79"
+                  },
+                  "source": {
+                    "columns": [
+                      "contact_id"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "important_dates"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "contacts"
+                  }
+                },
+                {
+                  "index": {
+                    "name": "important_dates_type_id_idx_907568e1"
+                  },
+                  "source": {
+                    "columns": [
+                      "type_id"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "important_dates"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "important_date_types"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "contact_id"
+                  ],
+                  "name": "important_dates_contact_id_idx_f6f6ad79",
+                  "prefix": "important_dates_contact_id_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "type_id"
+                  ],
+                  "name": "important_dates_type_id_idx_907568e1",
+                  "prefix": "important_dates_type_id_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": []
+            },
+            "relation_types": {
+              "columns": {
+                "id": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "default": {
+                    "expression": "autoincrement()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "sqlite/text@1",
+                  "dataType": "sqlite/text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "name"
+                  ]
+                }
+              ]
+            },
+            "relations": {
+              "columns": {
+                "created_at": {
+                  "codecId": "sqlite/datetime@1",
+                  "dataType": "sqlite/datetime",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "id1": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "nullable": false
+                },
+                "id2": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "nullable": false
+                },
+                "type_id": {
+                  "codecId": "sqlite/integer@1",
+                  "dataType": "sqlite/integer",
+                  "nullable": false
+                },
+                "updatedAt": {
+                  "codecId": "sqlite/datetime@1",
+                  "dataType": "sqlite/datetime",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "index": {
+                    "name": "relations_id1_idx_fbe90e91"
+                  },
+                  "source": {
+                    "columns": [
+                      "id1"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "relations"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "contacts"
+                  }
+                },
+                {
+                  "index": {
+                    "name": "relations_id2_idx_0229a7ab"
+                  },
+                  "source": {
+                    "columns": [
+                      "id2"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "relations"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "contacts"
+                  }
+                },
+                {
+                  "index": {
+                    "name": "relations_type_id_idx_907568e1"
+                  },
+                  "source": {
+                    "columns": [
+                      "type_id"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "relations"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "__unbound__",
+                    "tableName": "relation_types"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "id1"
+                  ],
+                  "name": "relations_id1_idx_fbe90e91",
+                  "prefix": "relations_id1_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "id2"
+                  ],
+                  "name": "relations_id2_idx_0229a7ab",
+                  "prefix": "relations_id2_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "type_id"
+                  ],
+                  "name": "relations_type_id_idx_907568e1",
+                  "prefix": "relations_type_id_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id1",
+                  "id2",
+                  "type_id"
+                ]
+              },
+              "uniques": []
+            }
+          }
+        },
+        "id": "__unbound__"
+      }
+    },
+    "storageHash": "90697b338ec81a8d55a5754a2bc0fd2e1a254899bffac58d290b12f749f633db"
+  },
+  "execution": {
+    "executionHash": "eeb15bb7fe4d22e8088ec539159362314c86d90d4e3884077ce6b4b9589547e8",
+    "mutations": {
+      "defaults": [
+        {
+          "onCreate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "onUpdate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "contacts",
+            "field": "updatedAt",
+            "namespace": "__unbound__"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "onUpdate": {
+            "id": "timestampNow",
+            "kind": "generator"
+          },
+          "ref": {
+            "entry": "relations",
+            "field": "updatedAt",
+            "namespace": "__unbound__"
+          }
+        }
+      ]
+    }
+  },
+  "capabilities": {
+    "sql": {
+      "foreignKeys": true,
+      "insertOnConflictSkip": true,
+      "insertOnConflictTarget": true,
+      "insertOnConflictWithoutTarget": true,
+      "jsonAgg": true,
+      "limit": true,
+      "orderBy": true,
+      "returning": true
+    }
+  },
+  "extensions": {},
+  "meta": {},
+  "_generated": {
+    "warning": "⚠️  GENERATED FILE - DO NOT EDIT",
+    "message": "This file is automatically generated by \"prisma contract emit\".",
+    "regenerate": "To regenerate, run: prisma contract emit"
+  }
+}

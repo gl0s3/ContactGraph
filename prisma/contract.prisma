@@ -1,12 +1,4 @@
-generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
-}
-
-datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
-}
+// use prisma-8
 
 model Contact {
   id   Int    @id @default(autoincrement())
@@ -27,7 +19,7 @@ model Contact {
   category  CategoryType? @relation(fields: [categoryTypeId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  updatedAt DateTime @onCreate(now()) @onUpdate(now())
 
   @@map("contacts")
 }
@@ -106,7 +98,7 @@ model Relation {
   type     RelationType @relation(fields: [typeId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  updatedAt DateTime @onCreate(now()) @onUpdate(now())
 
   @@id([id1, id2, typeId])
   @@index([id1])

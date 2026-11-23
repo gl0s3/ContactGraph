@@ -1,12 +1,10 @@
-import { PrismaClient } from "../../generated/prisma/client.ts";
-
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
+import sqlite from "@prisma/orm-sqlite/runtime";
+import type { Contract } from "../../prisma/contract.d";
+import contractJson from "../../prisma/contract.json" with {
+  type: "json",
 };
 
-export const prisma =
-  globalForPrisma.prisma ?? new PrismaClient();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-}
+export const db = sqlite<Contract>({
+  contractJson,
+  path: "./contacts.db",
+});
