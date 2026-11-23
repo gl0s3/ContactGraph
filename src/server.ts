@@ -11,13 +11,15 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.get("/contacts", async (req, res) => {
-    try {
-    const newContact = await createContact(req.body);
-    res.status(201).json(newContact);
+app.get("/contacts", async (_req, res) => {
+  try {
+    const contacts = await getAllContacts();
+    res.status(200).json(contacts);
   } catch (error) {
-    console.error("Ошибка при создании контакта:", error); // <-- Added logging
-    res.status(500).json({ error: "Ошибка при создании контакта" });
+    console.error("Ошибка получения контактов:", error);
+    res.status(500).json({
+      error: "Ошибка получения контактов",
+    });
   }
 });
 
