@@ -1,10 +1,5 @@
 import express from "express";
-import { 
-  createContact, 
-  getAllContacts, 
-  updateContact, 
-  deleteContact 
-} from "./lib/contacts";
+import { createContact, getAllContacts, updateContact, deleteContact } from "./lib/contacts";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -12,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 app.get("/contacts", async (req, res) => {
-    try {
+  try {
     const contacts = await getAllContacts();
     res.status(200).json(contacts);
   } catch (error) {
@@ -40,7 +35,7 @@ app.put("/contacts/:id", async (req, res) => {
     const id = Number(req.params.id); // Превращаем строку из URL в число
     const updatedContact = await updateContact(id, req.body);
     res.json(updatedContact);
-  } catch (error) {
+  } catch {
     res.status(500).json({ error: "Ошибка при обновлении контакта" });
   }
 });
@@ -50,7 +45,7 @@ app.delete("/contacts/:id", async (req, res) => {
     const id = Number(req.params.id);
     const deletedContact = await deleteContact(id);
     res.json({ message: "Контакт удален", contact: deletedContact });
-  } catch (error) {
+  } catch {
     res.status(500).json({ error: "Ошибка при удалении контакта" });
   }
 });
@@ -59,6 +54,6 @@ const server = app.listen(PORT, () => {
   console.log(`Сервер запущен на http://localhost:${PORT}`);
 });
 
-server.on('error', (error) => {
-  console.error('ОШИБКА СЕРВЕРА:', error);
+server.on("error", (error) => {
+  console.error("ОШИБКА СЕРВЕРА:", error);
 });
