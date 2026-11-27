@@ -1,0 +1,12 @@
+**/node_modules/
+**/dist/
+**/migrations/
+**/prisma/contract.json
+**/prisma/contract.d.ts
+**/package-lock.json
+**/.agents/
+**/.claude/
+**/.cursor/
+**/.devin/
+**/*.db
+**/*.db-*

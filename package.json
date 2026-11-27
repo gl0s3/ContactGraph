@@ -4,15 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-  "dev": "concurrently -k -n FRONT,BACK \"npm run dev:front\" \"npm run dev:back\"",
-  "dev:front": "npm --prefix frontend run dev",
-  "dev:back": "npm --prefix backend run dev",
-  "setup": "npm ci --prefix frontend && npm ci --prefix backend",
-  "db:migrate": "npm --prefix backend run db:migrate",
-  "build": "npm --prefix frontend run build",
-  "lint": "npm --prefix frontend run lint && npm --prefix backend run lint",
-  "format": "prettier --write .",
-  "format:check": "prettier --check ."
+    "dev": "concurrently -k -n FRONT,BACK \"npm run dev:front\" \"npm run dev:back\"",
+    "dev:front": "npm --prefix frontend run dev",
+    "dev:back": "npm --prefix backend run dev",
+    "setup": "npm ci --prefix frontend && npm ci --prefix backend",
+    "db:migrate": "npm --prefix backend run db:migrate",
+    "build": "npm --prefix frontend run build",
+    "lint": "npm --prefix frontend run lint && npm --prefix backend run lint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "repository": {
     "type": "git",
@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/gl0s3/ContactGraph#readme",
   "devDependencies": {
-    "concurrently": "^10.0.7"
+    "concurrently": "^10.0.7",
+    "prettier": "3.10.1"
   }
 }
