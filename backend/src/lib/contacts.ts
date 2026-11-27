@@ -12,11 +12,8 @@ export async function createContact(data: {
 }
 
 export async function getAllContacts() {
-  return await db.orm.Contact
-    .include("category")
-    .include("contactMethods", (methods) =>
-      methods.include("type")
-    )
+  return await db.orm.Contact.include("category")
+    .include("contactMethods", (methods) => methods.include("type"))
     .orderBy((contact) => contact.name.asc())
     .all();
 }
@@ -30,15 +27,11 @@ export async function updateContact(
     categoryTypeId?: number;
     address?: string;
     notes?: string;
-  }
+  },
 ) {
-  return await db.orm.Contact
-    .where({ id })
-    .update(data);
+  return await db.orm.Contact.where({ id }).update(data);
 }
 
 export async function deleteContact(id: number) {
-  return await db.orm.Contact
-    .where({ id })
-    .delete();
+  return await db.orm.Contact.where({ id }).delete();
 }

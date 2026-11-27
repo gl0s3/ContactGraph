@@ -1,7 +1,12 @@
-node_modules
-# Keep environment variables out of version control
-.env
-
+node_modules/
+dist/
 *.db
-
-/generated/prisma
+*.db-journal
+*.db-wal
+*.db-shm
+*.log
+.env
+.agents/
+.claude/
+.cursor/
+.devin/

@@ -1,4 +1,3 @@
-
 import { useEffect, useState, type FormEvent } from "react";
 import "./App.css";
 
@@ -34,30 +33,29 @@ export default function App() {
   const [error, setError] = useState("");
 
   // GET — получить все контакты
-  async function loadContacts() {
-    setLoading(true);
+  function loadContacts() {
+    return fetch("/contacts")
+      .then(async (response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
 
-    try {
-      const response = await fetch("/contacts");
+        const data: Contact[] = await response.json();
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-      }
+        if (!Array.isArray(data)) {
+          throw new Error("Сервер вернул неверный формат данных");
+        }
 
-      const data: Contact[] = await response.json();
-
-      if (!Array.isArray(data)) {
-        throw new Error("Сервер вернул неверный формат данных");
-      }
-
-      setContacts(data);
-      setError("");
-    } catch (err) {
-      console.error("Ошибка загрузки:", err);
-      setError("Не удалось загрузить контакты");
-    } finally {
-      setLoading(false);
-    }
+        setContacts(data);
+        setError("");
+      })
+      .catch((err) => {
+        console.error("Ошибка загрузки:", err);
+        setError("Не удалось загрузить контакты");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }
 
   // Загрузка при открытии страницы
@@ -73,9 +71,7 @@ export default function App() {
 
     const isEditing = editingId !== null;
 
-    const url = isEditing
-      ? `/contacts/${editingId}`
-      : "/contacts";
+    const url = isEditing ? `/contacts/${editingId}` : "/contacts";
 
     setSaving(true);
 
@@ -98,6 +94,7 @@ export default function App() {
       }
 
       cancel();
+      setLoading(true);
       await loadContacts();
     } catch (err) {
       console.error("Ошибка сохранения:", err);
@@ -142,6 +139,7 @@ export default function App() {
 
       if (editingId === id) cancel();
 
+      setLoading(true);
       await loadContacts();
     } catch (err) {
       console.error("Ошибка удаления:", err);
@@ -157,11 +155,7 @@ export default function App() {
       </header>
 
       <section>
-        <h2>
-          {editingId === null
-            ? "Добавить контакт"
-            : "Редактировать контакт"}
-        </h2>
+        <h2>{editingId === null ? "Добавить контакт" : "Редактировать контакт"}</h2>
 
         <form onSubmit={save}>
           <div className="fields">
@@ -169,43 +163,31 @@ export default function App() {
               placeholder="Имя *"
               required
               value={form.name}
-              onChange={(e) =>
-                setForm({ ...form, name: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, name: e.target.value })}
             />
 
             <input
               placeholder="Фамилия"
               value={form.lastName}
-              onChange={(e) =>
-                setForm({ ...form, lastName: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, lastName: e.target.value })}
             />
 
             <input
               placeholder="Адрес"
               value={form.address}
-              onChange={(e) =>
-                setForm({ ...form, address: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, address: e.target.value })}
             />
 
             <input
               placeholder="Заметки"
               value={form.notes}
-              onChange={(e) =>
-                setForm({ ...form, notes: e.target.value })
-              }
+              onChange={(e) => setForm({ ...form, notes: e.target.value })}
             />
           </div>
 
           <div className="buttons">
             <button type="submit" disabled={saving}>
-              {saving
-                ? "Сохранение..."
-                : editingId === null
-                  ? "Добавить"
-                  : "Сохранить"}
+              {saving ? "Сохранение..." : editingId === null ? "Добавить" : "Сохранить"}
             </button>
 
             {editingId !== null && (
@@ -233,11 +215,7 @@ export default function App() {
         )}
 
         <div style={{ marginBottom: 16 }}>
-          <button
-            type="button"
-            onClick={() => void loadContacts()}
-            disabled={loading}
-          >
+          <button type="button" onClick={() => void loadContacts()} disabled={loading}>
             Обновить список
           </button>
         </div>
@@ -271,19 +249,11 @@ export default function App() {
                   <td>{contact.notes || "—"}</td>
 
                   <td className="actions">
-                    <button
-                      type="button"
-                      title="Редактировать"
-                      onClick={() => edit(contact)}
-                    >
+                    <button type="button" title="Редактировать" onClick={() => edit(contact)}>
                       ✎
                     </button>
 
-                    <button
-                      type="button"
-                      title="Удалить"
-                      onClick={() => void remove(contact.id)}
-                    >
+                    <button type="button" title="Удалить" onClick={() => void remove(contact.id)}>
                       ×
                     </button>
                   </td>
