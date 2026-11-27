@@ -1,18 +1,30 @@
 {
-  "dependencies": {
-    "@prisma/orm-family-sql": "^8.0.0-rc.24",
-    "@prisma/orm-framework": "^8.0.0-rc.24",
-    "@prisma/orm-sqlite": "^8.0.0-rc.24",
-    "express": "^5.3.0"
-  },
-  "devDependencies": {
-    "@types/express": "^5.0.6",
-    "@types/node": "^26.6.6",
-    "prisma": "^8.0.0-rc.34",
-    "tsx": "^4.23.15",
-    "typescript": "^7.0.2"
-  },
+  "name": "contactgraph-unified",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "postinstall": "prisma skills sync || exit 0"
+  "dev": "concurrently -k -n FRONT,BACK \"npm run dev:front\" \"npm run dev:back\"",
+  "dev:front": "npm --prefix frontend run dev",
+  "dev:back": "npm --prefix backend run dev",
+  "setup": "npm ci --prefix frontend && npm ci --prefix backend",
+  "db:migrate": "npm --prefix backend run db:migrate",
+  "build": "npm --prefix frontend run build",
+  "lint": "npm --prefix frontend run lint && npm --prefix backend run lint",
+  "format": "prettier --write .",
+  "format:check": "prettier --check ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gl0s3/ContactGraph.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gl0s3/ContactGraph/issues"
+  },
+  "homepage": "https://github.com/gl0s3/ContactGraph#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.7"
   }
 }

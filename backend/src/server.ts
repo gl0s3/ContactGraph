@@ -13,8 +13,8 @@ app.use(express.json());
 
 app.get("/contacts", async (req, res) => {
     try {
-    const newContact = await createContact(req.body);
-    res.status(201).json(newContact);
+    const contacts = await getAllContacts();
+    res.status(200).json(contacts);
   } catch (error) {
     console.error("Ошибка при создании контакта:", error); // <-- Added logging
     res.status(500).json({ error: "Ошибка при создании контакта" });
