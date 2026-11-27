@@ -1,0 +1,20 @@
+(node:24539) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+Сервер запущен на http://localhost:3000
+ОШИБКА СЕРВЕРА: Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:1934:16)
+    at listenInCluster (node:net:1991:12)
+    at Server.listen (node:net:2096:7)
+    at Function.listen (/home/mark/ContactGraph/node_modules/express/lib/application.js:605:24)
+    at express (/home/mark/ContactGraph/src/server.ts:53:20)
+    at Object.<anonymous> (/home/mark/ContactGraph/src/server.ts:59:2)
+    at Module._compile (node:internal/modules/cjs/loader:1705:14)
+    at Object.transformer (/home/mark/ContactGraph/node_modules/tsx/dist/register-B1c7OH6V.cjs:22:2188)
+    at Module.load (node:internal/modules/cjs/loader:1441:32)
+    at Module._load (node:internal/modules/cjs/loader:1263:12) {
+  code: 'EADDRINUSE',
+  errno: -98,
+  syscall: 'listen',
+  address: '::',
+  port: 3000
+}
