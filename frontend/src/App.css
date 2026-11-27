@@ -1,0 +1,139 @@
+
+:root {
+  font-family: Arial, sans-serif;
+  color: #222;
+  background: #f7f7f7;
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: #f7f7f7;
+}
+
+#root {
+  width: 100%;
+  max-width: none;
+  min-height: 100vh;
+  display: block;
+  border: 0;
+  text-align: left;
+}
+
+.container {
+  max-width: 950px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+header {
+  margin-bottom: 32px;
+}
+
+h1 {
+  font-size: 30px;
+  margin: 0 0 8px;
+  color: #222;
+}
+
+h2 {
+  font-size: 18px;
+  margin: 0 0 20px;
+  color: #222;
+}
+
+p {
+  color: #777;
+  margin: 0;
+}
+
+section {
+  padding: 25px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+input, select {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  color: #222;
+  font: inherit;
+  font-size: 14px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+button {
+  padding: 9px 15px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: #222;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  background: #eee;
+}
+
+button[type="submit"] {
+  background: #222;
+  color: white;
+  border-color: #222;
+}
+
+button[type="submit"]:hover {
+  background: #444;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+th, td {
+  padding: 14px 10px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+th {
+  color: #777;
+  font-weight: 500;
+}
+
+.actions {
+  white-space: nowrap;
+}
+
+.actions button {
+  margin-right: 5px;
+}
+
+@media (max-width: 600px) {
+  .fields {
+    grid-template-columns: 1fr;
+  }
+
+  section {
+    overflow-x: auto;
+  }
+}
